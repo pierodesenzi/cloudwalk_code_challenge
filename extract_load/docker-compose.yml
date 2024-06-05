@@ -1,0 +1,52 @@
+services:
+
+  postgres_sv:
+    image: postgres:latest
+    container_name: postgres_sv
+    environment:
+      POSTGRES_USER: main_user
+      POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
+      POSTGRES_DB: pg_database
+    expose:
+      - "5432"
+    ports:
+      - "5432:5432"
+    networks:
+      - dc_network
+    volumes: 
+      - ../db/init.sql:/docker-entrypoint-initdb.d/10-init.sql
+      - postgres_db:/var/lib/postgresql/data
+    secrets:
+      - postgres_password
+
+  extract_load:
+    build:
+      context: ..
+      dockerfile: extract_load/Dockerfile
+    container_name: extract_load
+    depends_on:
+      - postgres_sv
+    networks:
+      - dc_network
+    environment:
+      DB_HOST: postgres_sv
+      DB_NAME: pg_database
+      DB_USER: main_user
+      DB_PASSWORD_FILE: /run/secrets/db_password
+    secrets:
+      - db_password
+
+volumes:
+  postgres_db:
+    driver: local
+
+networks:
+  dc_network:
+    name: dc_network
+    external: true
+
+secrets:
+  postgres_password:
+    file: ../secrets/postgres_password.txt
+  db_password:
+    file: ../secrets/postgres_password.txt
