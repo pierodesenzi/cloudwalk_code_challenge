@@ -16,7 +16,7 @@ default_args = {
     "retry_delay": timedelta(minutes=1),
 }
 
-# defing DAG
+# defining DAG
 dag = DAG(
     "sa_gdp_dag",
     default_args=default_args,
@@ -26,10 +26,25 @@ dag = DAG(
     catchup=False,
 )
 
-# Task: create common Docker network or skip if the network already exists
+# Task: create common Docker network or skip if the network already exists. A common
+# network is needed in order for different services, spawned by different
+# docker-compose.yml's in different folders, to communicate.
 create_common_network = BashOperator(
     task_id="create_common_network",
-    bash_command=f"docker network create --driver bridge dc_network || true",
+    bash_command="""
+    
+    NETWORK_NAME="dc_network"
+
+    # checking if the network already exists
+    if ! docker network inspect "$NETWORK_NAME" &>/dev/null; then
+        # creating network
+        docker network create --driver bridge "$NETWORK_NAME"
+        echo "Network '$NETWORK_NAME' created."
+    else
+        # not doing nothing
+        echo "Network '$NETWORK_NAME' already exists."
+    fi
+    """,
     dag=dag,
 )
 

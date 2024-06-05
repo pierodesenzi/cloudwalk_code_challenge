@@ -10,6 +10,9 @@ It's steps are defined in an Airflow DAG:
 4) Copy the CSV from the container to the host machine
 5) Bring down the Docker Compose services
 
+Each Python container that is instantiated will have installed the contents of the respective folder's `requirements.txt` and the contents of the folder `common`, which has another `requirements.txt` and a file called `tools.py`, with functions that are used for database connection and secrets retrieval.
+
+
 ## Installation
 
 Assuming the user already has Docker installed with Docker Compose v2, the necessary steps are:
@@ -27,6 +30,9 @@ pip install -r requirements.txt
     echo "my_password" | docker secret create postgres_password -
     ```
     b) Inserting this value in `secrets/postgres_password.txt`, as explained on [the official Docker documentation for using secrets with Docker Compose](https://docs.docker.com/compose/use-secrets/).
+    ```
+    my_password
+    ```
 
 3) Add the project's DAG path to airflow.cfg, under dags_folder
 ```
