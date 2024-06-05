@@ -1,7 +1,14 @@
 # Cloudwalk technical challenge
 ## by Piero Desenzi
 
-This software leverages Docker, Docker Compose, PostgreSQL and AirFlow to obtain the GDP of South American countries for the past 5 years.
+This software leverages Docker, Docker Compose, PostgreSQL and Airflow to obtain the GDP of South American countries for the past 5 years.
+
+It's steps are defined in an Airflow DAG:
+1) Create a Docker network for all of the services to communicate between themselves
+2) Using Docker Compose, create secrets, a volume, and two services: one for Postgres, which will create the database and the tables; and another one for the data extraction from the World Bank's API and upsertion into the database
+3) Using Docker compose, create a service that will connect to Postgres and do the desired query, storing the result in a CSV file
+4) Copy the CSV from the container to the host machine
+5) Bring down the Docker Compose services
 
 ## Installation
 
@@ -15,13 +22,13 @@ pip install -r requirements.txt
 
 2) Create a secret for the database connection, by:
 
-    a) Creating a docker secret:
+    a) Creating a Docker secret:
     ```
     echo "my_password" | docker secret create postgres_password -
     ```
     b) Inserting this value in `secrets/postgres_password.txt`, as explained on [the official Docker documentation for using secrets with Docker Compose](https://docs.docker.com/compose/use-secrets/).
 
-3) Adding the project's DAG path to airflow.cfg, under dags_folder
+3) Add the project's DAG path to airflow.cfg, under dags_folder
 ```
 [core]
 # The folder where your airflow pipelines live, most likely a
@@ -32,3 +39,9 @@ pip install -r requirements.txt
 dags_folder = /home/my_user/path_to_project/airflow/dags
 
 ```
+
+## Usage
+
+1) Run Airflow and enter the Web UI
+2) Start the "sa_gdp_dag" DAG
+3) Collect the resulting CSV from the project's folder
