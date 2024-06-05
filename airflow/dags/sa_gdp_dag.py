@@ -18,7 +18,7 @@ default_args = {
 
 # defing DAG
 dag = DAG(
-    "south_america_gdp_dag",
+    "sa_gdp_dag",
     default_args=default_args,
     description="DAG for obtaining csv with South America's GDP per country over the past 5 years.",
     schedule_interval=timedelta(days=1),
