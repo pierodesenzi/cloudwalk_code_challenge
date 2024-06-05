@@ -4,17 +4,17 @@
 This software leverages Docker, Docker Compose, PostgreSQL and Airflow to obtain the GDP of South American countries for the past 5 years.
 
 It's steps are defined in an Airflow DAG:
-1) Create a Docker network for all of the services to communicate between themselves
-2) Using Docker Compose, create secrets, a volume, and three services: 
+1) Create a Docker network for the services to communicate between themselves
+2) Using Docker Compose, create secrets, a volume, and three services:
 
     a) one for Postgres, which will create the database and the tables;
 
     b) one for the data extraction from the World Bank's API and upsertion into the database;
 
     c) one that will connect to Postgres and do the desired query, storing the result in a CSV file.
-    
-4) Copy the CSV from the container to the host machine
-5) Bring down the Docker Compose services
+
+3) Copy the CSV from the container to the host machine
+4) Bring down the Docker Compose services
 
 Each Python container that is instantiated will have installed the contents of the respective folder's `requirements.txt` and the contents of the folder `common`, which has another `requirements.txt` and a file called `tools.py`, with functions that are used for database connection and secrets retrieval.
 
@@ -30,7 +30,22 @@ Assuming the user already has Docker installed with Docker Compose v2, the neces
 pip install -r requirements.txt
 ```
 
-2) Create a secret for the database connection, by:
+2) Initialize Airflow
+```
+airflow db migrate
+```
+
+3) Create an Airflow user
+```
+airflow users create \
+    --username admin \
+    --firstname FIRST_NAME \
+    --lastname LAST_NAME \
+    --role Admin \
+    --email admin@example.com
+```
+
+4) Create a secret for the database connection, by:
 
     a) Creating a Docker secret:
     ```
@@ -41,7 +56,7 @@ pip install -r requirements.txt
     my_password
     ```
 
-3) Add the project's DAG path to airflow.cfg, under dags_folder
+5) Add the project's DAG path to airflow.cfg, under dags_folder
 ```
 [core]
 # The folder where your airflow pipelines live, most likely a
