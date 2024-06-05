@@ -27,8 +27,8 @@ dag = DAG(
 )
 
 # Task: create common Docker network or skip if the network already exists. A common
-# network is needed in order for different services, spawned by different
-# docker-compose.yml's in different folders, to communicate.
+# network is needed for different services, spawned by different docker-compose.yml's
+# in different folders, to communicate.
 create_common_network = BashOperator(
     task_id="create_common_network",
     bash_command="""
@@ -65,7 +65,7 @@ up_query = BashOperator(
 # Task: copy resulting CSV to host machine
 get_csv = BashOperator(
     task_id="get_csv",
-    bash_command=f"docker cp query:/app/sa_gdp.csv {base_directory}/.",
+    bash_command=f"docker cp query:/app/sa_gdp.csv {base_directory}/results/.",
     dag=dag,
 )
 
