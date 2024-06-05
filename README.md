@@ -20,7 +20,7 @@ Each Python container that is instantiated will have installed the contents of t
 
 > Notes:
 >
->1) `query/requirements.txt` is empty, but as a good practice, in name of standardization and being ready for possible future changes, it was kept there)
+>1) `query/requirements.txt` is empty, but as a good practice, in name of standardization and being ready for possible future changes, it was kept there
 >2) For the logging, `print()` was chosen instead of `logger` because the former does show up on the Docker logs
 
 
@@ -49,18 +49,7 @@ airflow users create \
     --email admin@example.com
 ```
 
-4) Create a secret for the database connection, by:
-
-    a) Creating a Docker secret:
-    ```
-    echo "my_password" | docker secret create postgres_password -
-    ```
-    b) Inserting this value in `secrets/postgres_password.txt`, as explained on [the official Docker documentation for using secrets with Docker Compose](https://docs.docker.com/compose/use-secrets/).
-    ```
-    my_password
-    ```
-
-5) Add the project's DAG path to airflow.cfg, under dags_folder
+4) Add the project's DAG path to airflow.cfg, under dags_folder
 ```
 [core]
 # The folder where your airflow pipelines live, most likely a
@@ -71,6 +60,17 @@ airflow users create \
 dags_folder = /home/my_user/path_to_project/airflow/dags
 
 ```
+5) Create a secret for the database connection, by:
+
+    a) Creating a Docker secret:
+    ```
+    echo "my_password" | docker secret create postgres_password -
+    ```
+    b) Inserting this value in `secrets/postgres_password.txt`, as explained on [the official Docker documentation for using secrets with Docker Compose](https://docs.docker.com/compose/use-secrets/).
+    ```
+    my_password
+    ```
+
 
 ## Usage
 

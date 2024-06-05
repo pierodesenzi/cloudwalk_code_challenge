@@ -55,7 +55,7 @@ up_db = BashOperator(
     dag=dag,
 )
 
-# Task: start services for extract and load data
+# Task: start services for extracting and loading data
 up_el = BashOperator(
     task_id="docker_compose_el_up",
     bash_command=f"docker compose -f {base_directory}/extract_load/docker-compose.yml up -d",
@@ -83,7 +83,7 @@ down_db = BashOperator(
     dag=dag,
 )
 
-# Task: bring down the Docker Compose services for extract and load data
+# Task: bring down the Docker Compose services for extracting and loading data
 down_el = BashOperator(
     task_id="docker_compose_el_down",
     bash_command=f"docker compose -f {base_directory}/extract_load/docker-compose.yml down",
