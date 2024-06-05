@@ -6,12 +6,13 @@ This software leverages Docker, Docker Compose, PostgreSQL and Airflow to obtain
 It's steps are defined in an Airflow DAG:
 1) Create a Docker network for all of the services to communicate between themselves
 2) Using Docker Compose, create secrets, a volume, and two services: one for Postgres, which will create the database and the tables; and another one for the data extraction from the World Bank's API and upsertion into the database
-3) Using Docker compose, create a service that will connect to Postgres and do the desired query, storing the result in a CSV file
+3) Using Docker Compose, create a service that will connect to Postgres and do the desired query, storing the result in a CSV file
 4) Copy the CSV from the container to the host machine
 5) Bring down the Docker Compose services
 
 Each Python container that is instantiated will have installed the contents of the respective folder's `requirements.txt` and the contents of the folder `common`, which has another `requirements.txt` and a file called `tools.py`, with functions that are used for database connection and secrets retrieval.
 
+(Note: `query/requirements.txt` is empty, but as a good practice, in name of standardization and being ready for possible future changes, it was kept there)
 
 ## Installation
 
