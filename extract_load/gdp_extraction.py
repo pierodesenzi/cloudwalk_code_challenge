@@ -1,13 +1,15 @@
 import requests
-from common.tools import get_postgres_connection, close_postgres_connection
 
+from common.tools import get_postgres_connection, close_postgres_connection
 
 def main() -> None:
     # connecting to Postgres
     connection = get_postgres_connection()
     cursor = connection.cursor()
 
-    # getting data from API and organizing in a list of values
+    # getting data from API and organizing in a list of values. To populate the
+    # database, the incoming data is from the year 2000 to 2024.
+    print("Obtaining source data from API")
     result = requests.get(
         "https://api.worldbank.org/v2/country/ARG;BOL;BRA;CHL;COL;ECU;GUY;PRY;PER;SUR;"
         "URY;VEN/indicator/NY.GDP.MKTP.CD?format=json&page=1&per_page=300&date=2000:2024"
@@ -23,8 +25,10 @@ def main() -> None:
         for entry in entries
     ]
 
-    # upserting "gdp" data based on (country_id, year)
-    insert_sql = """
+    # upserting "gdp" data based on (country_id, year). Only one entry is possible for
+    # each pair country-year, but "value" may receive updates in the source database.
+    print("Upserting data")
+    upsert_sql = """
         INSERT INTO gdp (country_id, year, value)
         VALUES ('{}', {}, {})
         ON CONFLICT (country_id, year) DO UPDATE SET
@@ -32,7 +36,7 @@ def main() -> None:
     """
 
     for value in data:
-        cursor.execute(insert_sql.format(value[0], value[1], value[2]))
+        cursor.execute(upsert_sql.format(value[0], value[1], value[2]))
 
     connection.commit()
 

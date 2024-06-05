@@ -38,7 +38,8 @@ def get_postgres_connection() -> psycopg2.extensions.connection:
     Raises:
         ConnectionError: if unable to connect to Postgres after 15 attempts.
     """
-    print("Connecting to Postgres...")
+    print("Connecting to Postgres")
+
     connection = None
     connection_attempts = 0
     while not connection:
@@ -74,6 +75,7 @@ def close_postgres_connection(
         cursor (psycopg2.extensions.cursor): Postgres cursor object.
         connection (psycopg2.extensions.connection): Postgres connection object.
     """
+    print("Closing Postgres connection")
     cursor.close()
     connection.close()
     print("PostgreSQL connection is closed")

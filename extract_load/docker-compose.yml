@@ -13,6 +13,8 @@ services:
       DB_PASSWORD_FILE: /run/secrets/db_password
     secrets:
       - db_password
+    volumes:
+      - ./logs:/logs
 
 networks:
   dc_network:
