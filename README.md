@@ -18,14 +18,10 @@ It's steps are defined in an Airflow DAG:
 
 Each Python container that is instantiated will have installed the contents of the respective folder's `requirements.txt` and the contents of the folder `common`, which has another `requirements.txt` and a file called `tools.py`, with functions that are used for database connection and secrets retrieval.
 
-
-<div style="border: 1px solid black; padding: 10px; border-radius: 5px; background-color: #ADD8E6; color: #333333">
-  Notes:
-
-  1) `query/requirements.txt` is empty, but as a good practice, in name of standardization and being ready for possible future changes, it was kept there)
-  2) For the logging, `print()` was chosen instead of `logger` because the former does show up on the Docker logs
-</div>
-
+> Notes:
+>
+>1) `query/requirements.txt` is empty, but as a good practice, in name of standardization and being ready for possible future changes, it was kept there)
+>2) For the logging, `print()` was chosen instead of `logger` because the former does show up on the Docker logs
 
 
 ## Installation
