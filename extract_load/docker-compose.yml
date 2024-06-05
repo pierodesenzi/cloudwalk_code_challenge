@@ -14,7 +14,7 @@ services:
     networks:
       - dc_network
     volumes: 
-      - ./init.sql:/docker-entrypoint-initdb.d/10-init.sql
+      - ../db/init.sql:/docker-entrypoint-initdb.d/10-init.sql
       - postgres_db:/var/lib/postgresql/data
     secrets:
       - postgres_password

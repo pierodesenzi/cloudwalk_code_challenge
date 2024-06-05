@@ -38,6 +38,7 @@ def get_postgres_connection() -> psycopg2.extensions.connection:
     Raises:
         ConnectionError: if unable to connect to Postgres after 15 attempts.
     """
+    print("Connecting to Postres...")
     connection = None
     connection_attempts = 0
     while not connection:
