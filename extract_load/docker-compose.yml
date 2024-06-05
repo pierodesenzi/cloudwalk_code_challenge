@@ -4,8 +4,6 @@ services:
       context: ..
       dockerfile: extract_load/Dockerfile
     container_name: extract_load
-    depends_on:
-      - postgres_sv
     networks:
       - dc_network
     environment:

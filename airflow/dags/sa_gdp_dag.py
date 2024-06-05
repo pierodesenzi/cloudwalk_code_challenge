@@ -76,14 +76,14 @@ get_csv = BashOperator(
     dag=dag,
 )
 
-# Task: bring down the Docker Compose services for 1) Postgres 2) extract and load data
+# Task: bring down the Docker Compose services for Postgres
 down_db = BashOperator(
     task_id="docker_compose_db_down",
     bash_command=f"docker compose -f {base_directory}/db/docker-compose.yml down",
     dag=dag,
 )
 
-# Task: bring down the Docker Compose services for 1) Postgres 2) extract and load data
+# Task: bring down the Docker Compose services for extract and load data
 down_el = BashOperator(
     task_id="docker_compose_el_down",
     bash_command=f"docker compose -f {base_directory}/extract_load/docker-compose.yml down",

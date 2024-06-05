@@ -5,8 +5,14 @@ This software leverages Docker, Docker Compose, PostgreSQL and Airflow to obtain
 
 It's steps are defined in an Airflow DAG:
 1) Create a Docker network for all of the services to communicate between themselves
-2) Using Docker Compose, create secrets, a volume, and two services: one for Postgres, which will create the database and the tables; and another one for the data extraction from the World Bank's API and upsertion into the database
-3) Using Docker Compose, create a service that will connect to Postgres and do the desired query, storing the result in a CSV file
+2) Using Docker Compose, create secrets, a volume, and three services: 
+
+    a) one for Postgres, which will create the database and the tables;
+
+    b) one for the data extraction from the World Bank's API and upsertion into the database;
+
+    c) one that will connect to Postgres and do the desired query, storing the result in a CSV file.
+    
 4) Copy the CSV from the container to the host machine
 5) Bring down the Docker Compose services
 
